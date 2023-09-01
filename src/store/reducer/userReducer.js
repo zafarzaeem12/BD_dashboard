@@ -16,8 +16,8 @@ export const extraReducers = (builder) => {
             });
             localStorage.setItem("user", JSON.stringify(action.payload.data));
             state.user = action.payload.data
-            console.log(state.user)
-            axios.defaults.headers.common['Authorization'] = `Bearer ${action.payload.data.admin_authentication}`;
+            console.log("check",action.payload.data.user_authentication)
+            axios.defaults.headers.common['Authorization'] = `Bearer ${action.payload.data.user_authentication}`;
 
             state.error = null
         })
@@ -618,9 +618,6 @@ export const extraReducers = (builder) => {
             state.status = 'loading'
         })
         .addCase(userLogout.fulfilled, (state, action) => {
-            toast.success(action.payload.message, {
-                position: toast.POSITION.TOP_RIGHT
-            });
             localStorage.clear();
             state.status = 'succeeded'
             state.user = null
@@ -632,6 +629,9 @@ export const extraReducers = (builder) => {
             state.areaChart = null
             state.charges = null
             state.campaigns = null
+            toast.success(action.payload.message, {
+                position: toast.POSITION.TOP_RIGHT
+            });
         })
         .addCase(userLogout.rejected, (state, action) => {
             toast.error(action.payload.message, {

@@ -37,7 +37,7 @@ axios.interceptors.response.use(
 
 export const signinUser = createAsyncThunk('admin/log-in', async (bodyData, { rejectWithValue }) => {
     try {
-        const response = await axios.post(`admin/log-in`, bodyData)
+        const response = await axios.post(`admin/admin-login`, bodyData)
         console.log('response', response.response)
         return response.data
     } catch (error) {
@@ -433,7 +433,7 @@ export const updatePrivacy = createAsyncThunk('update-content/privacy_policy', a
 
 export const userLogout = createAsyncThunk('admin/log-out', async (bodyData = null, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`admin/log-out`)
+        const response = await axios.post(`admin/logout`)
         return response.data
     } catch (error) {
         return rejectWithValue(error.response.data)
@@ -506,7 +506,7 @@ const userSlice = createSlice({
 })
 export const getUserStatus = (state) => state?.users?.status;
 export const getUserError = (state) => state?.users?.error;
-export const getUsertoken = (state) => state?.users?.user?.admin_authentication;
+export const getUsertoken = (state) => state?.users?.user?.user_authentication;
 export const getProfile = (state) => state?.users?.user;
 export const getTerms = (state) => state?.users?.terms;
 export const getPrivacy = (state) => state?.users?.privacy;

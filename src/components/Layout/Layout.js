@@ -26,10 +26,13 @@ import FeedbackList from "../../pages/Feedback";
 const Layout = () => {
   const { isLoading } = useContext(context);
   const status = useSelector(getUserStatus);
-  const authtoken = useSelector(getUsertoken);
+  const authtoken = useSelector( getUsertoken);
+  
+  //const authtoken = useSelector((state) => state?.users?.user?.user_authentication);
   return (
     <>
       {status == "loading" || isLoading ? <Spinner /> : <></>}
+      {console.log("authtoken",authtoken)}
       <div className={!authtoken ? "" : "wrapper"}>
         <BrowserRouter>
           {authtoken ? (

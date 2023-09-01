@@ -16,8 +16,9 @@ const Login = () => {
     e.preventDefault();
     try {
       console.log('email, password', email, password)
-      await dispatch(signinUser({ admin_email: email, admin_password: password })).unwrap()
-      navigate('/dashboard');
+      await dispatch(signinUser({ 
+        email: email, password: password  })).unwrap()
+      navigate('/admin/dashboard');
     } catch (rejectedValueOrSerializedError) {
       console.log(rejectedValueOrSerializedError)
     }
