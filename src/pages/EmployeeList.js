@@ -83,7 +83,7 @@ const EmployeeList = () => {
         try {
             setUsers(null)
             const response = await dispatch(getAllEmployees()).unwrap()
-            console.log(response.data)
+            console.log("12334",response.data)
             setUsers(response?.data)
         } catch (rejectedValueOrSerializedError) {
             console.log(rejectedValueOrSerializedError)

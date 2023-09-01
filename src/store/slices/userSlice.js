@@ -67,7 +67,7 @@ export const dashboard = createAsyncThunk('get-dashboard-data', async (bodyData 
 
 export const getAllUsers = createAsyncThunk('get-all-users', async (bodyData = null, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`get-all-users`)
+        const response = await axios.get(`admin/getallusers`)
         
         return response.data
     } catch (error) {
@@ -302,7 +302,7 @@ export const getAllEmployers = createAsyncThunk('get-all-employers', async (body
 
 export const getAllEmployees = createAsyncThunk('get-all-employees', async (bodyData = null, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`get-all-employees`)
+        const response = await axios.get(`getallusers`)
         
         return response.data
     } catch (error) {
