@@ -8,8 +8,8 @@ import {extraReducers} from "../reducer/userReducer"
 
 axios.defaults.baseURL = process.env.REACT_APP_APIURL
 const user = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : null
-console.log(user)
-axios.defaults.headers.common['Authorization'] = `Bearer ${user?.admin_authentication}`;
+console.log("12345!!!!",user)
+axios.defaults.headers.common['Authorization'] = `Bearer ${user?.user_authentication}`;
 const initialState = {
     status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
@@ -268,16 +268,6 @@ export const deleteReason = createAsyncThunk('delete-reason', async (id, { rejec
     }
 })
 
-
-
-
-
-
-
-
-
-
-
 export const getAllPayments = createAsyncThunk('get-all-payment', async (bodyData = null, { rejectWithValue }) => {
     try {
         const response = await axios.get(`get-all-payment`)
@@ -395,9 +385,11 @@ export const approveDisapprove = createAsyncThunk('verify-employer', async (id, 
 })
 
 
-export const blockUnblock = createAsyncThunk('block-unblock-user', async (id, { rejectWithValue }) => {
+export const blockUnblock = createAsyncThunk('block-unblock-user', async (data  , { rejectWithValue }) => {
     try {
-        const response = await axios.get(`block-unblock-user/${id}`)
+        const {  ids , payload } = data
+        const is_blocked = payload        
+        const response = await axios.post(`admin/is_blocked/${ids}?is_blocked=${is_blocked}`)
         return response.data
     } catch (error) {
         return rejectWithValue(error.response.data)

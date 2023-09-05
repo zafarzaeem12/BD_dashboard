@@ -606,6 +606,7 @@ export const extraReducers = (builder) => {
         })
         .addCase(blockUnblock.rejected, (state, action) => {
             state.status = 'failed'
+            console.log("tellme" , action)
             state.error = action.payload.message
             toast.error(action.payload.message, {
                 position: toast.POSITION.TOP_RIGHT

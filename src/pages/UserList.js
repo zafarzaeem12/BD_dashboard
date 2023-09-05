@@ -168,7 +168,12 @@ const UserList = () => {
 
   const blockUnblockAccount = async (id) => {
     try {
-      await dispatch(blockUnblock(id)).unwrap();
+      const ids = id._id;
+     const payload = id.is_blocked ? 0 : 1
+      const data = {
+        ids,payload
+      }
+      await dispatch(blockUnblock(data)).unwrap();
       $("#tableData").DataTable().destroy();
       try {
         Users();
@@ -266,21 +271,21 @@ const UserList = () => {
                 <p>
                   {" "}
                   <b>Name:</b>{" "}
-                  {userDetail?.user_name ? (
-                    userDetail?.user_name
+                  {userDetail ? (
+                    userDetail?.name
                   ) : (
                     <>Name not mentioned</>
                   )}
                 </p>
                 <p>
                   {" "}
-                  <b>Email:</b> {userDetail?.user_email}
+                  <b>Email:</b> {userDetail?.email}
                 </p>
                 <p>
                   {" "}
                   <b>Number:</b>{" "}
-                  {userDetail?.user_phone ? (
-                    userDetail?.user_phone
+                  {userDetail ? (
+                    userDetail?.phone_number
                   ) : (
                     <>Number not mentioned</>
                   )}
@@ -316,7 +321,7 @@ const UserList = () => {
             </>
           ) : modalType == "delete" ? (
             <>
-              {id.user_is_blocked == 1 ? (
+              {id.is_blocked == 1 ? (
                 <p className="pass-text">Are you sure you want to Unblock?</p>
               ) : (
                 <p className="pass-text">Are you sure you want to Block?</p>
@@ -341,10 +346,10 @@ const UserList = () => {
                     <div className="login-button mt-2" style={{ width: "40%" }}>
                       <button
                         type="button"
-                        onClick={() => blockUnblockAccount(id._id)}
+                        onClick={() => blockUnblockAccount(id)}
                         className="cta-btn col-reds w-100"
                       >
-                        {id?.user_is_blocked === 1 ? "Unblock" : "Block"}
+                        {id?.is_blocked === 1 ? "Unblock" : "Block"}
                       </button>
                     </div>
                     <div className="login-button mt-2" style={{ width: "40%" }}>
@@ -572,13 +577,13 @@ const UserList = () => {
                             <tr key={i}>
                               <td>{i + 1}</td>
                               <td>
-                                {item?.user_name ? (
-                                  item?.user_name
+                                {item ? (
+                                  item?.name
                                 ) : (
                                   <>Name not mentioned</>
                                 )}
                               </td>
-                              <td>{item?.user_email}</td>
+                              <td>{item?.email}</td>
                               <td
                                 style={{
                                   wordWrap: "break-word",
@@ -586,8 +591,8 @@ const UserList = () => {
                                   whiteSpace: "normal",
                                 }}
                               >
-                                {item?.user_phone ? (
-                                  item?.user_phone
+                                {item ? (
+                                  item?.phone_number
                                 ) : (
                                   <>number not mentioned</>
                                 )}
@@ -639,7 +644,7 @@ const UserList = () => {
                                     }}
                                     onClick={() => viewModal(item, "delete")}
                                   >
-                                    {item?.user_is_blocked === 1 ? (
+                                    {item?.is_blocked === 1 ? (
                                       <i className="fa fa-unlock-alt">
                                         {" "}
                                         Unblock
