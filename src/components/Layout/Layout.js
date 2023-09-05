@@ -22,7 +22,8 @@ import ReasonManagement from "../../pages/ReasonManagement";
 import PostManagement from "../../pages/PostManagement";
 import ReportManagement from "../../pages/ReportManagement";
 import FeedbackList from "../../pages/Feedback";
-
+import AddCategory from '../../pages/AddCategory'
+import CategoryList from '../../pages/CategoryList'
 const Layout = () => {
   const { isLoading } = useContext(context);
   const status = useSelector(getUserStatus);
@@ -71,6 +72,10 @@ const Layout = () => {
                     exact
                     element={<ReasonManagement />}
                   />
+                  <Route path="/admin/category-list" exact element={<CategoryList />} />
+                  <Route path="/admin/category-add" exact element={<AddCategory />} />
+                  
+
                   <Route
                     path="/admin/posts"
                     exact

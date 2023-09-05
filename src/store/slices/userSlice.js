@@ -75,6 +75,16 @@ export const getAllUsers = createAsyncThunk('get-all-users', async (bodyData = n
     }
 })
 
+export const getAllCategory = createAsyncThunk('get-all-category', async (bodyData = null, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`admin/getallcategory`)
+        
+        return response.data
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+
 
 export const getAllReports = createAsyncThunk('get-all-reports', async (bodyData = null, { rejectWithValue }) => {
     try {
@@ -390,6 +400,21 @@ export const blockUnblock = createAsyncThunk('block-unblock-user', async (data  
         const {  ids , payload } = data
         const is_blocked = payload        
         const response = await axios.post(`admin/is_blocked/${ids}?is_blocked=${is_blocked}`)
+        return response.data
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+
+export const categorystatus = createAsyncThunk('block-unblock-catgeory', async (data  , { rejectWithValue }) => {
+    try {
+        const {  ids , status } = data
+        console.log('sssssssssssobject' , ids , status)
+        const datas = {
+            status : status
+        }
+        const response = await axios.post(`admin/deleteCategory/${ids}` , datas)
+        console.log("response",response)
         return response.data
     } catch (error) {
         return rejectWithValue(error.response.data)

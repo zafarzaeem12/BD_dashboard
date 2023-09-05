@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import axios from "axios";
-import { addCategory, addPreference, addQuestion, addReason, approveDisapprove, approveDisapproveAd, approveDisapproveReport, blockUnblock, dashboard, deleteAccount, deleteCategory, deletePreference, deleteQuestion, deleteReason, getAllBusiness, getAllEmployees, getAllEmployers, getAllPayments, getAllPosts, addPost, getAllUsers, getCategory, getEmployerJobs, getEmployersRequest, getMarketPlace, getPreference, getQuestion, getReason, getReportedPosts, Pp, privacy, recentCampaigns, signinUser, Tc, TcPp, terms, updatePassword, updatePp, updatePrivacy, updateTc, updateTcpp, updateTerms, userLogout, deletePost, getAllReports, acceptRejectReport, editPost, getAllFeedbacks } from "../slices/userSlice"
+import { getAllCategory , categorystatus ,addCategory, addPreference, addQuestion, addReason, approveDisapprove, approveDisapproveAd, approveDisapproveReport, blockUnblock, dashboard, deleteAccount, deleteCategory, deletePreference, deleteQuestion, deleteReason, getAllBusiness, getAllEmployees, getAllEmployers, getAllPayments, getAllPosts, addPost, getAllUsers, getCategory, getEmployerJobs, getEmployersRequest, getMarketPlace, getPreference, getQuestion, getReason, getReportedPosts, Pp, privacy, recentCampaigns, signinUser, Tc, TcPp, terms, updatePassword, updatePp, updatePrivacy, updateTc, updateTcpp, updateTerms, userLogout, deletePost, getAllReports, acceptRejectReport, editPost, getAllFeedbacks } from "../slices/userSlice"
 export const extraReducers = (builder) => {
     builder
 
@@ -612,6 +612,47 @@ export const extraReducers = (builder) => {
                 position: toast.POSITION.TOP_RIGHT
             });
         })
+
+           // all Category
+        .addCase(getAllCategory.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(getAllCategory.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.error = null
+            toast.success(action.payload.message, {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        })
+        .addCase(getAllCategory.rejected, (state, action) => {
+            state.status = 'failed'
+            state.error = action.payload.message
+            toast.error(action.payload.message, {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        })
+
+            // Soft delete Category
+            .addCase(categorystatus.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(categorystatus.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.error = null
+                toast.success(action.payload.message, {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+            })
+            .addCase(categorystatus.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.payload.message
+                toast.error(action.payload.message, {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+            })
+ 
+        
+        
 
 
         // Log Out

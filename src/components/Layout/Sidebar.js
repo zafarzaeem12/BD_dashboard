@@ -28,6 +28,18 @@ const Sidebar = () => {
                             
                         </ul>
                     </li>
+                    <li className={location?.pathname === "/admin/user-list" || location?.pathname === "/admin/report-management" || location?.pathname === "/admin/feedback-list" ? "active" : "noactive"}>
+                        <a href="#category" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Category Management</a>
+                        <ul className={location?.pathname === "/admin/user-list" || location?.pathname === "/admin/report-management" || location?.pathname === "/admin/feedback-list"  ? "list-unstyled" : "list-unstyled collapse"} id="category">
+                            <li className={location?.pathname === "/admin/user-list" ? "active" : "noactive"}> <Link to="/admin/category-list">All Categories</Link> </li>
+                            <li className={location?.pathname === "/admin/report-management" ? "active" : "noactive"}> <Link to="/admin/report-management">All Reports</Link> </li>
+                            <li className={location?.pathname === "/admin/feedback-list" ? "active" : "noactive"}> <Link to="/admin/feedback-list">All Feedbacks</Link> </li>
+                            {/* <li className={location?.pathname === "/admin/employer-request-list" ? "active" : "noactive"}> <Link to="/admin/employer-request-list">All Employer Requests</Link> </li>
+                            <li className={location?.pathname === "/admin/employer-list" ? "active" : "noactive"}> <Link to="/admin/employer-list">All Employers</Link> </li>
+                            <li className={location?.pathname === "/admin/employee-list" ? "active" : "noactive"}> <Link to="/admin/employee-list">All Employees</Link> </li> */}
+                            
+                        </ul>
+                    </li>
                     {/* <li className={location?.pathname === "/Market-Place-Ads"  ? "active" : "noactive"}>
                         <a href="#reporting" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Ads Management</a>
                         <ul className={location?.pathname === "/Market-Place-Ads"  ? "list-unstyled" : "collapse list-unstyled"} id="reporting">
