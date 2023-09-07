@@ -179,14 +179,13 @@ const CategoryList = () => {
   const blockUnblockAccount = async (id) => {
     try {
       const ids = id._id;
-      console.log("prev", id.status);
       const status = id.status ? false : true;
 
       const data = {
         ids,
         status,
       };
-      console.log("kkk", data);
+   
       await dispatch(categorystatus(data)).unwrap();
       $("#tableData").DataTable().destroy();
       try {
