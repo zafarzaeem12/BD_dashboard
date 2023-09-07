@@ -137,228 +137,208 @@ const AddCategory = () => {
     };
   });
 
-  const Posts = async () => {
-    try {
-      setPosts(null);
-      const response = await dispatch(getAllPosts()).unwrap();
-      console.log(response.data);
-      setPosts(response?.data);
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   const Posts = async () => {
+//     try {
+//       setPosts(null);
+//       const response = await dispatch(getAllPosts()).unwrap();
+//       console.log(response.data);
+//       setPosts(response?.data);
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-  const AllPreferences = async () => {
-    try {
-      setPreferences(null);
-      const response = await dispatch(getPreference()).unwrap();
-      console.log(response.data);
-      setPreferences(response?.data);
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   const AllPreferences = async () => {
+//     try {
+//       setPreferences(null);
+//       const response = await dispatch(getPreference()).unwrap();
+//       console.log(response.data);
+//       setPreferences(response?.data);
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-  function AttachmenthandleChange(e) {
-    e.preventDefault();
-    console.log("e.target.files[0]", e.target.files);
-    setAttachment(e.target.files[0]);
-  }
-  function ThumbnailhandleChange(e) {
-    e.preventDefault();
-    setThumbnail(e.target.files[0]);
-  }
+//   function AttachmenthandleChange(e) {
+//     e.preventDefault();
+//     console.log("e.target.files[0]", e.target.files);
+//     setAttachment(e.target.files[0]);
+//   }
+//   function ThumbnailhandleChange(e) {
+//     e.preventDefault();
+//     setThumbnail(e.target.files[0]);
+//   }
 
-  // const handleClick = (e, i) => {
-  //   if(category.includes(e.target.value)){
-  //     let index = category.indexOf(e.target.value);
-  //       if (index !== -1) {
-  //         category.splice(index, 1);
-  //       }
-  //   } else{
-  //     setCategory(current => [...current, e.target.value]);
-  //   }
-  // };
 
-  const handleClick = (e, i) => {
-    if (category.includes(e.target.value)) {
-      setCategory(
-        category.filter((selectedItem) => selectedItem !== e.target.value)
-      );
-    } else {
-      setCategory([...category, e.target.value]);
-    }
-  };
+//   const editHandleClick = (e, i) => {
+//     if (editcategory.includes(e.target.value)) {
+//       setEditcategory(
+//         editcategory.filter((selectedItem) => selectedItem !== e.target.value)
+//       );
+//     } else {
+//       setEditcategory([...editcategory, e.target.value]);
+//     }
+//   };
 
-  const editHandleClick = (e, i) => {
-    if (editcategory.includes(e.target.value)) {
-      setEditcategory(
-        editcategory.filter((selectedItem) => selectedItem !== e.target.value)
-      );
-    } else {
-      setEditcategory([...editcategory, e.target.value]);
-    }
-  };
+//   const createPost = async () => {
+//     try {
+//       if (category.length < 1) {
+//         toast.error("please add atleast one category");
+//       } else {
+//         var formdata = new FormData();
+//         formdata.append("text", text);
+//         formdata.append("hash_tags", JSON.stringify(tagsarray));
+//         formdata.append("title", title);
+//         formdata.append("category", JSON.stringify(category));
+//         formdata.append("attachment", attachment);
+//         formdata.append("thumbnail", thumbnail);
 
-  const createPost = async () => {
-    try {
-      if (category.length < 1) {
-        toast.error("please add atleast one category");
-      } else {
-        var formdata = new FormData();
-        formdata.append("text", text);
-        formdata.append("hash_tags", JSON.stringify(tagsarray));
-        formdata.append("title", title);
-        formdata.append("category", JSON.stringify(category));
-        formdata.append("attachment", attachment);
-        formdata.append("thumbnail", thumbnail);
+//         // setpreferences(null)
+//         const response = await dispatch(addPost(formdata)).unwrap();
+//         console.log(response.data);
+//         // setpreferences(response?.data)
+//         closeModal();
+//         // window.location.reload();
+//         Posts();
+//         AllPreferences();
+//       }
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-        // setpreferences(null)
-        const response = await dispatch(addPost(formdata)).unwrap();
-        console.log(response.data);
-        // setpreferences(response?.data)
-        closeModal();
-        // window.location.reload();
-        Posts();
-        AllPreferences();
-      }
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   const EditPost = async () => {
+//     try {
+//       // console.log('category', editcategory)
+//       // return
+//       // return
+//       if (editcategory.length < 1) {
+//         toast.error("please add atleast one category");
+//       } else {
+//         var formdata = new FormData();
+//         formdata.append("post_id", id?._id);
+//         formdata.append("text", edittext);
+//         formdata.append("hash_tags", JSON.stringify(edittagsarray));
+//         formdata.append("title", edittitle);
+//         formdata.append("category", JSON.stringify(editcategory));
+//         formdata.append("attachment", attachment);
+//         formdata.append("thumbnail", thumbnail);
 
-  const EditPost = async () => {
-    try {
-      // console.log('category', editcategory)
-      // return
-      // return
-      if (editcategory.length < 1) {
-        toast.error("please add atleast one category");
-      } else {
-        var formdata = new FormData();
-        formdata.append("post_id", id?._id);
-        formdata.append("text", edittext);
-        formdata.append("hash_tags", JSON.stringify(edittagsarray));
-        formdata.append("title", edittitle);
-        formdata.append("category", JSON.stringify(editcategory));
-        formdata.append("attachment", attachment);
-        formdata.append("thumbnail", thumbnail);
+//         // setpreferences(null)
+//         const response = await dispatch(editPost(formdata)).unwrap();
+//         console.log(response.data);
+//         // setpreferences(response?.data)
+//         closeModal();
+//         // window.location.reload();
+//         Posts();
+//         AllPreferences();
+//       }
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-        // setpreferences(null)
-        const response = await dispatch(editPost(formdata)).unwrap();
-        console.log(response.data);
-        // setpreferences(response?.data)
-        closeModal();
-        // window.location.reload();
-        Posts();
-        AllPreferences();
-      }
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   const addTags = (e) => {
+//     e.preventDefault();
+//     try {
+//       if (tags == "") {
+//         toast.error("Tag field shouldn't be empty");
+//       } else {
+//         setTagsarray([...tagsarray, tags]);
+//       }
+//       setTags("");
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-  const addTags = (e) => {
-    e.preventDefault();
-    try {
-      if (tags == "") {
-        toast.error("Tag field shouldn't be empty");
-      } else {
-        setTagsarray([...tagsarray, tags]);
-      }
-      setTags("");
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   const editTags = (e) => {
+//     e.preventDefault();
+//     try {
+//       if (edittags == "") {
+//         toast.error("Tag field shouldn't be empty");
+//       } else {
+//         setEditTagsarray([...edittagsarray, edittags]);
+//       }
+//       setEditTags("");
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-  const editTags = (e) => {
-    e.preventDefault();
-    try {
-      if (edittags == "") {
-        toast.error("Tag field shouldn't be empty");
-      } else {
-        setEditTagsarray([...edittagsarray, edittags]);
-      }
-      setEditTags("");
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   const removeTags = (e, i) => {
+//     e.preventDefault();
+//     try {
+//       console.log("i, index", e, i);
+//       // return
+//       var arrr = tagsarray?.splice(i, 1);
+//       console.log("subcategory", tags);
+//       setTagsarray((current) =>
+//         current.filter((arr) => {
+//           return arr !== arrr;
+//         })
+//       );
+//       // setSubcategoryarray()
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-  const removeTags = (e, i) => {
-    e.preventDefault();
-    try {
-      console.log("i, index", e, i);
-      // return
-      var arrr = tagsarray?.splice(i, 1);
-      console.log("subcategory", tags);
-      setTagsarray((current) =>
-        current.filter((arr) => {
-          return arr !== arrr;
-        })
-      );
-      // setSubcategoryarray()
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   const removeEditTags = (e, i) => {
+//     e.preventDefault();
+//     try {
+//       console.log("i, index", e, i);
+//       // return
+//       var arrr = edittagsarray?.splice(i, 1);
+//       console.log("subcategory", edittags);
+//       setTagsarray((current) =>
+//         current.filter((arr) => {
+//           return arr !== arrr;
+//         })
+//       );
+//       // setSubcategoryarray()
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-  const removeEditTags = (e, i) => {
-    e.preventDefault();
-    try {
-      console.log("i, index", e, i);
-      // return
-      var arrr = edittagsarray?.splice(i, 1);
-      console.log("subcategory", edittags);
-      setTagsarray((current) =>
-        current.filter((arr) => {
-          return arr !== arrr;
-        })
-      );
-      // setSubcategoryarray()
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   const postDelete = async (id) => {
+//     try {
+//       // setpreferences(null)
+//       const response = await dispatch(deletePost({ _id: id })).unwrap();
+//       console.log(response.data);
+//       // setpreferences(response?.data)
+//       closeModal();
+//       // window.location.reload();
+//       Posts();
+//       setId("");
+//     } catch (rejectedValueOrSerializedError) {
+//       console.log(rejectedValueOrSerializedError);
+//     }
+//   };
 
-  const postDelete = async (id) => {
-    try {
-      // setpreferences(null)
-      const response = await dispatch(deletePost({ _id: id })).unwrap();
-      console.log(response.data);
-      // setpreferences(response?.data)
-      closeModal();
-      // window.location.reload();
-      Posts();
-      setId("");
-    } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
-    }
-  };
+//   useEffect(() => {
+//     let mount = true;
+//     if (mount) {
+//       Posts();
+//       AllPreferences();
+//     }
+//     return () => {
+//       mount = false;
+//     };
+//   }, []);
 
-  useEffect(() => {
-    let mount = true;
-    if (mount) {
-      Posts();
-      AllPreferences();
-    }
-    return () => {
-      mount = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (posts) {
-      $("#tableData").DataTable({
-        lengthMenu: [10, 25, 50, 100, 200],
-        language: {
-          emptyTable: "Posts Not Found",
-        },
-        destroy: true,
-      });
-    }
-  }, [posts]);
+//   useEffect(() => {
+//     if (posts) {
+//       $("#tableData").DataTable({
+//         lengthMenu: [10, 25, 50, 100, 200],
+//         language: {
+//           emptyTable: "Posts Not Found",
+//         },
+//         destroy: true,
+//       });
+//     }
+//   }, [posts]);
 
   return (
     <>
@@ -419,7 +399,7 @@ const AddCategory = () => {
                     <div className="login-button mt-2" style={{ width: "40%" }}>
                       <button
                         type="button"
-                        onClick={() => postDelete(id)}
+                        // onClick={() => postDelete(id)}
                         className="cta-btn col-reds w-100"
                       >
                         Delete
@@ -553,23 +533,8 @@ const AddCategory = () => {
                     </span>
                   </div>
                   <div className="category_sectBtn">
-                    {preferences?.map((data, index) => (
-                      <button
-                        className="categoryButton"
-                        style={{
-                          backgroundColor: category.includes(data?.preference)
-                            ? "#204498"
-                            : "inherit",
-                          color: category.includes(data?.preference)
-                            ? "#fff"
-                            : "inherit",
-                        }}
-                        value={data?.preference}
-                        onClick={(e) => handleClick(e, index)}
-                      >
-                        {data.preference}
-                      </button>
-                    ))}
+                   
+                    
                   </div>
                   {/* <select
                     name=""
@@ -615,7 +580,7 @@ const AddCategory = () => {
                     multiple
                     accept="image/jpeg, image/bmp, image/x-png, image/png, image/gif, video/mp4, video/mpeg, audio/mpeg, application/ogg, audio/mp4, audio/mp3"
                     id="upload-img"
-                    onChange={(e) => AttachmenthandleChange(e)}
+                    // onChange={(e) => AttachmenthandleChange(e)}
                   />
                   {/* </label> */}
                 </div>
@@ -646,7 +611,7 @@ const AddCategory = () => {
                     multiple
                     accept="image/png, image/gif, image/jpeg"
                     id="upload-img"
-                    onChange={(e) => ThumbnailhandleChange(e)}
+                    // onChange={(e) => ThumbnailhandleChange(e)}
                   />
                   {/* </label> */}
                 </div>
@@ -654,7 +619,7 @@ const AddCategory = () => {
                   <button
                     className="btn btn-primary"
                     type="submit"
-                    onClick={createPost}
+                    // onClick={createPost}
                   >
                     Create{" "}
                   </button>
@@ -702,7 +667,7 @@ const AddCategory = () => {
                         className="form-control"
                         aria-label="Category"
                         value={edittitle}
-                        onChange={(e) => setEdittitle(e.target.value)}
+                      //  onChange={(e) => setEdittitle(e.target.value)}
                       />
                     </div>
                     <div className="input-group input-group-sm mb-3 ">
@@ -719,7 +684,7 @@ const AddCategory = () => {
                         className="form-control"
                         aria-label="Text"
                         value={edittext}
-                        onChange={(e) => setEdittext(e.target.value)}
+                      //  onChange={(e) => setEdittext(e.target.value)}
                       />
                     </div>
                     {/* <div className="input-group input-group-sm mb-3 ">
@@ -801,7 +766,7 @@ const AddCategory = () => {
                                 : "inherit",
                             }}
                             value={data?.preference}
-                            onClick={(e) => editHandleClick(e, index)}
+                            //onClick={(e) => editHandleClick(e, index)}
                           >
                             {data.preference}
                           </button>
@@ -895,7 +860,7 @@ const AddCategory = () => {
                                 multiple
                                 accept="image/jpeg, image/bmp, image/x-png, image/png, image/gif"
                                 id="upload-img"
-                                onChange={(e) => AttachmenthandleChange(e)}
+                               // onChange={(e) => AttachmenthandleChange(e)}
                               />
                             </>
                           ) : type == "Video" ? (
@@ -908,7 +873,7 @@ const AddCategory = () => {
                                 multiple
                                 accept="video/mp4, video/mpeg"
                                 id="upload-img"
-                                onChange={(e) => AttachmenthandleChange(e)}
+                                //onChange={(e) => AttachmenthandleChange(e)}
                               />
                             </>
                           ) : type == "Audio" ? (
@@ -921,7 +886,7 @@ const AddCategory = () => {
                                 multiple
                                 accept="audio/mpeg, application/ogg, audio/mp4, audio/mp3"
                                 id="upload-img"
-                                onChange={(e) => AttachmenthandleChange(e)}
+                               // onChange={(e) => AttachmenthandleChange(e)}
                               />
                             </>
                           ) : (
@@ -962,7 +927,7 @@ const AddCategory = () => {
                             multiple
                             accept="image/png, image/gif, image/jpeg"
                             id="upload-img"
-                            onChange={(e) => ThumbnailhandleChange(e)}
+                          // onChange={(e) => ThumbnailhandleChange(e)}
                           />
                           {/* </label> */}
                         </div>
@@ -974,7 +939,7 @@ const AddCategory = () => {
                       <button
                         className="btn btn-primary"
                         type="submit"
-                        onClick={EditPost}
+                       // onClick={EditPost}
                       >
                         Edit Post{" "}
                       </button>
@@ -1027,160 +992,9 @@ const AddCategory = () => {
             </div>
           </div>
         </section>
-        <div className="container">
-          <div className="row">
-            {posts?.map((item, i) => (
-              // <div className="">
-              //   <div className="">
 
-              <div className="col-xl-3 col-md-4 col-sm-6 col-12">
-                <div className="card_body">
-                  <div className="card_sect1">
-                    <div className="cardImg">
-                      {item?.type == "Article" ? (
-                        <>
-                          {item?.attachment ? (
-                            <>
-                              <img
-                                src={`${process.env.REACT_APP_APIIMAGE}${item?.attachment}`}
-                              />
-                            </>
-                          ) : (
-                            <>
-                              <img src={article} alt="img" />
-                            </>
-                          )}
-                          {/* <div class="photos">{item?.type}</div> */}
-                        </>
-                      ) : item?.type == "Video" ? (
-                        <>
-                          {item?.attachment ? (
-                            <>
-                              <video
-                                controls
-                                src={`${process.env.REACT_APP_APIIMAGE}${item?.attachment}`}
-                              />
-                            </>
-                          ) : (
-                            <>
-                              {/* <video src={attachmentPic} alt="video"/> */}
-                            </>
-                          )}
-                        </>
-                      ) : item?.type == "Blog" ? (
-                        <>
-                          {item?.attachment ? (
-                            <>
-                              <img
-                                src={`${process.env.REACT_APP_APIIMAGE}${item?.attachment}`}
-                              />
-                            </>
-                          ) : (
-                            <>
-                              {/* <video src={attachmentPic} alt="video"/> */}
-                            </>
-                          )}
-                        </>
-                      ) : item.type == "Audio" ? (
-                        <>
-                          {item?.attachment ? (
-                            <>
-                              <audio
-                                controls
-                                src={`${process.env.REACT_APP_APIIMAGE}${item?.attachment}`}
-                                alt="audio"
-                              />
-                            </>
-                          ) : (
-                            <>
-                              {/* <video src={attachmentPic} alt="video"/> */}
-                            </>
-                          )}
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    <div className="cardBadge">
-                      <p className="badgeTxt">{item?.type}</p>
-                      <div>
-                        {/* {item?.type == "Article" || item?.type == "Audio" ?  */}
-                        <button
-                          className="del_btn-1"
-                          onClick={() => viewModal(item, "edit")}
-                        >
-                          <i className="fas fa-edit"></i>
-                        </button>
-                        {/* <button className="del_btn-1" onClick={()=> viewModal(item, 'edit')}><i className="fas fa-eye"></i></button> */}
-                        {/* } */}
-                        {/* {item?.type == "Article" || item?.type == "Audio" ?  */}
-                        <button
-                          className="del_btn"
-                          onClick={() => viewModal(item, "delete")}
-                        >
-                          <i className="fa fa-trash"></i>
-                        </button>
-                        {/* <button className="del_btn" onClick={()=> viewModal(item, 'delete')}><i className="fa fa-trash"></i></button> */}
-                        {/* } */}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card_sect2">
-                    <div className="cardSect2_top">
-                      <p className="title">{item?.title}</p>
-                      <p className="desc">
-                        <ReadMore>{item?.text}</ReadMore>
-                      </p>
-                      {/* <button onclick="myFunction()" id="myBtn">Read more</button> */}
-                      <br />
-                      <div
-                        className="desc desc_scroll"
-                        style={{ display: "flex", flexWrap: "wrap" }}
-                      >
-                        {item?.category?.map((data) => (
-                          <p style={{ marginRight: "5px", fontWeight: "bold" }}>
-                            <span>#</span>
-                            {data}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="ft_reactionSect">
-                      <div className="cardSect2_footer">
-                        {/* <div className="box_category"> {item?.category}</div> */}
-                        <div className="box_reaction">
-                          <span>
-                            <i class="fab fa-gratipay"></i>
-                            {item?.reaction} Reactions
-                          </span>
-                          {/* <span><i class="fab fa-gratipay"></i></span> */}
-                        </div>
-                        <div className="box_reaction">
-                          <span>
-                            <i class="fas fa-comments"></i>
-                            {item?.comment} Comments
-                          </span>
-                          {/* <span><i class="fab fa-gratipay"></i></span> */}
-                        </div>
-                      </div>
-                      <div className="cardSect2_footer">
-                        <div className="time_category">
-                          <i class="far fa-clock"></i>
-                          {moment(
-                            item?.createdAt,
-                            "YYYY-MM-DDTHH:mm:ss"
-                          ).fromNow()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              //   </div>
-              // </div>
-            ))}
-          </div>
-        </div>
+      
+
       </div>
     </>
   );

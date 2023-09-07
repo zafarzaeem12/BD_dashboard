@@ -413,13 +413,37 @@ export const categorystatus = createAsyncThunk('block-unblock-catgeory', async (
         const datas = {
             status : status
         }
-        const response = await axios.post(`admin/deleteCategory/${ids}` , datas)
+        const response = await axios.put(`admin/statuschangedCategory/${ids}` , datas)
         console.log("response",response)
         return response.data
     } catch (error) {
         return rejectWithValue(error.response.data)
     }
 })
+
+export const categorydeleted = createAsyncThunk('deleted-catgeory', async (ids  , { rejectWithValue }) => {
+    try {
+      
+        const response = await axios.delete(`admin/deleteCategory/${ids}`)
+        console.log("response",response)
+        return response.data
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+
+export const CategoryAdd = createAsyncThunk('add-catgeory', async (data  , { rejectWithValue }) => {
+    try {
+      
+        const response = await axios.post(`admin/createCategory` , data)
+        console.log("response",response)
+        return response.data
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+
+
 
 export const updatePassword = createAsyncThunk('admin/update-password', async (bodyData, { rejectWithValue }) => {
     try {

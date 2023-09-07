@@ -8,6 +8,8 @@ import {
   categorystatus,
   getAllCategory,
   getUserStatus,
+  categorydeleted,
+  CategoryAdd
 } from "../store/slices/userSlice";
 import { CSVLink } from "react-csv";
 import $ from "jquery";
@@ -18,6 +20,7 @@ import Slider, {
   SliderValueLabelProps,
 } from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
@@ -102,6 +105,7 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
 
 Modal.setAppElement("#root");
 const CategoryList = () => {
+  const navigate = useNavigate();
   const [id, setId] = useState();
   const [form, setForm] = useState();
   const dispatch = useDispatch();
@@ -110,6 +114,7 @@ const CategoryList = () => {
   const [userDetail, setUserDetail] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState();
+  const [name, setname] = useState("");
   // var csvData = [
   //     ["Name", "Email", "Number", "State", "Verified", "Zip Code", "Role"],
   // ]
@@ -125,8 +130,11 @@ const CategoryList = () => {
       setUserDetail(item);
     } else if (type == "delete") {
       setId(item);
+    } else if (type == "deleteRow") {
+      setId(item);
     } else if (type == "formDetail") {
       setForm(item?.form);
+      setname(item?.form?.name);
     }
     setModalType(type);
     setIsOpen(true);
@@ -171,17 +179,18 @@ const CategoryList = () => {
   const blockUnblockAccount = async (id) => {
     try {
       const ids = id._id;
-      console.log("prev",id.status)
-      const status = id.status ? false : true
-     
+      console.log("prev", id.status);
+      const status = id.status ? false : true;
+
       const data = {
-        ids , status
-      }
-      console.log("kkk",data)
+        ids,
+        status,
+      };
+      console.log("kkk", data);
       await dispatch(categorystatus(data)).unwrap();
       $("#tableData").DataTable().destroy();
       try {
-        Users();
+        Categorys();
         closeModal();
       } catch (rejectedValueOrSerializedError) {
         console.log(rejectedValueOrSerializedError);
@@ -191,7 +200,24 @@ const CategoryList = () => {
     }
   };
 
-  const Users = async () => {
+  const DeleteCat = async (id) => {
+    try {
+      const ids = id._id;
+
+      await dispatch(categorydeleted(ids)).unwrap();
+      $("#tableData").DataTable().destroy();
+      try {
+        Categorys();
+        closeModal();
+      } catch (rejectedValueOrSerializedError) {
+        console.log(rejectedValueOrSerializedError);
+      }
+    } catch (rejectedValueOrSerializedError) {
+      console.log(rejectedValueOrSerializedError);
+    }
+  };
+
+  const Categorys = async () => {
     try {
       // setUsers(null)
       const response = await dispatch(getAllCategory()).unwrap();
@@ -207,10 +233,30 @@ const CategoryList = () => {
     return String.fromCharCode(i + asciiOffset);
   }
 
+  const CreatedData = async ( ) => {
+    try{
+        const data = {
+            name
+        }
+        await dispatch(CategoryAdd(data)).unwrap();
+        $('#tableData')
+                .DataTable().destroy();
+            try {
+                Categorys();
+                closeModal();
+            } catch (rejectedValueOrSerializedError) {
+                console.log(rejectedValueOrSerializedError)
+            }
+        
+    }catch(err){
+        console.log(err)
+    }
+  }
+ 
   useEffect(() => {
     let mount = true;
     if (mount) {
-      Users();
+      Categorys();
     }
     return () => {
       mount = false;
@@ -276,11 +322,7 @@ const CategoryList = () => {
                 <p>
                   {" "}
                   <b>Name:</b>{" "}
-                  {userDetail ? (
-                    userDetail?.name
-                  ) : (
-                    <>Name not mentioned</>
-                  )}
+                  {userDetail ? userDetail?.name : <>Name not mentioned</>}
                 </p>
                 <p>
                   {" "}
@@ -326,7 +368,7 @@ const CategoryList = () => {
             </>
           ) : modalType == "delete" ? (
             <>
-              {id.status == true ? (
+              {id.status == false ? (
                 <p className="pass-text">Are you sure you want to Unblock?</p>
               ) : (
                 <p className="pass-text">Are you sure you want to Block?</p>
@@ -351,10 +393,57 @@ const CategoryList = () => {
                     <div className="login-button mt-2" style={{ width: "40%" }}>
                       <button
                         type="button"
-                        onClick={() => blockUnblockAccount(id)}
+                        onClick={() => {
+                          blockUnblockAccount(id);
+                        }}
                         className="cta-btn col-reds w-100"
                       >
                         {id?.status === false ? "Unblock" : "Blocks"}
+                      </button>
+                    </div>
+                    <div className="login-button mt-2" style={{ width: "40%" }}>
+                      <button
+                        type="button"
+                        onClick={closeModal}
+                        className="cta-btn col-reds w-100"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </>
+          ) : modalType == "deleteRow" ? (
+            <>
+              <p className="pass-text">Are you sure you want to Delete?</p>
+
+              <button
+                onClick={closeModal}
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+              <div className="modal-body">
+                <form>
+                  <div
+                    className="pass-form-wrap"
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <div className="login-button mt-2" style={{ width: "40%" }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          DeleteCat(id);
+                        }}
+                        className="cta-btn col-reds w-100"
+                      >
+                        Delete
                       </button>
                     </div>
                     <div className="login-button mt-2" style={{ width: "40%" }}>
@@ -381,148 +470,59 @@ const CategoryList = () => {
                 aria-label="Close"
               />
               <div className="modal-body">
-                {/* <p > <b>Image:</b> {userDetail?.user_image ? <><img height="20%" width="20%" style={{ borderRadius: 5 }} src={`${process.env.REACT_APP_APIIMAGE}${userDetail?.user_image}`}></img></> : <>No Image Found</>}</p> */}
-                {form?.answers.map((data, i) => (
-                  <>
-                    <p>
-                      {" "}
-                      <b>Question: {i + 1}</b>{" "}
-                      {data?.question ? (
-                        data?.question
-                      ) : (
-                        <>Question not Mention</>
-                      )}
-                    </p>
-                    {data?.type == "Radio Button" ? (
-                      <>
-                        {data?.options.map((item, i) => (
-                          <>
-                            <input
-                              type="radio"
-                              id={i}
-                              name=""
-                              value={item?.option}
-                              checked={item?.is_selected == 1 ? true : false}
-                            />
-                            <label for={i}>{item?.option}</label>
-                            <br></br>
-                            {/* <p > <b>Options:  {convertIndexToAlphabet(i)}</b> <span style={{backgroundColor: item?.is_selected == 1 ? "lightGreen" : "white"}}>{item?.option ? item?.option : <></>}</span></p> */}
-                          </>
-                        ))}
-                      </>
-                    ) : data?.type == "Check Box" ? (
-                      <>
-                        {data?.options.map((item, i) => (
-                          <>
-                            <input
-                              type="checkbox"
-                              id={i}
-                              name=""
-                              value={item?.option}
-                              checked={item?.is_selected == 1 ? true : false}
-                            />
-                            <label for={i}>{item?.option}</label>
-                            <br></br>
-                            {/* <p > <b>Options:  {convertIndexToAlphabet(i)}</b> <span style={{backgroundColor: item?.is_selected == 1 ? "lightGreen" : "white"}}>{item?.option ? item?.option : <></>}</span></p> */}
-                          </>
-                        ))}
-                      </>
-                    ) : data?.type == "Text Field" ? (
-                      <>
-                        {data?.options.map((item, i) => (
-                          <>
-                            {/* <input type="text" style={{fontWeight: "bold"}} id={i} name="" value={item?.option} disabled/><br/> */}
-                            <p>
-                              {" "}
-                              <b>Answer: </b>{" "}
-                              {item?.option ? (
-                                item?.option
-                              ) : (
-                                <>Answer not Mention</>
-                              )}
-                            </p>
-                            {/* <p style={{fontWeight: "bold"}}>{item?.option}</p> */}
-                            {/* <label for={i}>{item?.option}</label><br></br> */}
-                            {/* <p > <b>Options:  {convertIndexToAlphabet(i)}</b> <span style={{backgroundColor: item?.is_selected == 1 ? "lightGreen" : "white"}}>{item?.option ? item?.option : <></>}</span></p> */}
-                          </>
-                        ))}
-                      </>
-                    ) : data?.type == "Slider" ? (
-                      <>
-                        {/* {data?.options.map((item, i)=>( */}
-                        <>
-                          <Box sx={{ width: 320 }}>
-                            {/* <Typography gutterBottom></Typography> */}
-                            <IOSSlider
-                              aria-label="ios slider"
-                              value={data?.options[1]?.value}
-                              min={data?.options[0]?.option}
-                              max={data?.options[1]?.option}
-                              valueLabelDisplay="on"
-                            />
-                          </Box>
-                          {/* <input type="range" name="" value={data?.options[1]?.value} min={data?.options[0]?.option} max={data?.options[1]?.option}/>
-                                            <p>Value: <span >{data?.options[1]?.value}</span></p> */}
-                          {/* <label for={i}>{item?.option}</label><br></br> */}
-                          {/* <p > <b>Options:  {convertIndexToAlphabet(i)}</b> <span style={{backgroundColor: item?.is_selected == 1 ? "lightGreen" : "white"}}>{item?.option ? item?.option : <></>}</span></p> */}
-                        </>
-                        {/* ))} */}
-                      </>
-                    ) : data?.type == "Radio Button With Reason" ? (
-                      <>
-                        {data?.options.map((item, i) => (
-                          <div className="reason_radioBtn" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
-                            <div>
-                              <input
-                                type="radio"
-                                id={i}
-                                name=""
-                                value={item?.option}
-                                checked={item?.is_selected == 1 ? true : false}
-                              />
-                              <label for={i}>{item?.option}</label>
-                              <br></br>
-                            </div>
-                            {item?.is_selected == 1 ? (
-                              <>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    marginLeft: "5px",
-                                  }}
-                                >
-                                  <p className="reason_p">
-                                    {" "}
-                                    <b>Reason: </b>{" "}
-                                    <span>
-                                      {item?.reason ? (
-                                        item?.reason
-                                      ) : (
-                                        <>Reason not Mention</>
-                                      )}
-                                    </span>
-                                  </p>
-                                  {/* <input type="text" name="" value={item?.reason} disabled/> */}
-                                </div>
-                              </>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                        ))}
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                    {/* {data?.options.map((item, i)=>(
-                                        <>
-                                            <p > <b>Options:  {convertIndexToAlphabet(i)}</b> <span style={{backgroundColor: item?.is_selected == 1 ? "lightGreen" : "white"}}>{item?.option ? item?.option : <></>}</span></p>
-                                        </>
-                                    ))} */}
-                  </>
-                ))}
+                <form>
+                  <div
+                    className="pass-form-wrap"
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <label>Category Name</label>
+                    <br></br>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Enter Category name"
+                      value={name}
+                      style={{ backgroundColor: "grey" , width : 400 }}
+                      onChange={(e) => setname(e.target.value)}
+                    />
+                    <br></br>
+                  </div>
+                </form>
+                    <div className="login-button mt-2" style={{ width: "40%" }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          CreatedData()
+                        }}
+                        className="cta-btn col-reds w-100"
+                      >
+                        Create
+                      </button>
+                    </div>
+                    <div className="login-button mt-2" style={{ width: "40%" }}>
+                      <button
+                        type="button"
+                        onClick={closeModal}
+                        className="cta-btn col-reds w-100"
+                      >
+                        Cancel
+                      </button>
+                    </div>
               </div>
+
+              <br></br>
+
+              <button
+                onClick={closeModal}
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
             </>
           ) : (
             <></>
@@ -537,17 +537,18 @@ const CategoryList = () => {
           marginTop: users ? "3%" : "12%",
         }}
       >
-        {/* <section className="excel-sec">
-                    <div className="container">
-                        <div className=" mt-2 mb-3">
-                            {users ?
-                                <button className="excel-btn col-reds w-10 pt-1 pb-1">
-                                    <CSVLink filename={"User List.csv"} data={csvData}>Export Excel</CSVLink>
-                                </button>
-                                : <></>}
-                        </div>
-                    </div>
-                </section> */}
+        <section className="excel-sec">
+          <div className="container">
+            <div className="d-flex justify-content-end mt-2 mb-3 pr-3">
+              <button
+                className="excel-btn col-reds w-10 pt-1 pb-1"
+                onClick={(item) => viewModal(item, "formDetail")}
+              >
+                Add Category
+              </button>
+            </div>
+          </div>
+        </section>
         <section className="coupon-sec-2">
           <div className="container tableContainer">
             <div className="row">
@@ -570,23 +571,19 @@ const CategoryList = () => {
                               <th>Form</th>
                               <th>Detail</th>
                               <th>Status</th>
+                              <th>Delete</th>
                             </tr>
                           ) : (
                             <tr></tr>
                           )}
                         </thead>
 
-                        
                         <tbody>
                           {users?.map((item, i) => (
                             <tr key={i}>
                               <td>{i + 1}</td>
                               <td>
-                                {item ? (
-                                  item?.name
-                                ) : (
-                                  <>Name not mentioned</>
-                                )}
+                                {item ? item?.name : <>Name not mentioned</>}
                               </td>
                               <td>
                                 {moment(item?.createdAt).format("DD-MMM-YYYY")}
@@ -646,6 +643,21 @@ const CategoryList = () => {
                                         Block
                                       </i>
                                     )}
+                                  </span>
+                                  {/* <span style={{ cursor: "pointer", fontWeight: "bold", margin: 10 }} onClick={() => blockUnblockAccount(item?._id)}  >{item?.user_is_blocked === 1 ? <i className="fa fa-unlock-alt"> UnBlock</i> : <i className="fa fa-solid fa-ban"> Block</i>}</span> */}
+                                </span>
+                              </td>
+                              <td>
+                                <span className="edit-icon">
+                                  <span
+                                    style={{
+                                      cursor: "pointer",
+                                      fontWeight: "bold",
+                                      margin: 10,
+                                    }}
+                                    onClick={() => viewModal(item, "deleteRow")}
+                                  >
+                                    <i className="fa fa-trash"> Delete</i>
                                   </span>
                                   {/* <span style={{ cursor: "pointer", fontWeight: "bold", margin: 10 }} onClick={() => blockUnblockAccount(item?._id)}  >{item?.user_is_blocked === 1 ? <i className="fa fa-unlock-alt"> UnBlock</i> : <i className="fa fa-solid fa-ban"> Block</i>}</span> */}
                                 </span>
